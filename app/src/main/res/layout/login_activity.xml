@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width=""
+        android:layout_width="400dp"
         android:layout_height="47dp"
         android:onClick="click"
         android:text="Login"
