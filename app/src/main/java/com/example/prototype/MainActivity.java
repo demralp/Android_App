@@ -1,7 +1,12 @@
 package com.example.prototype;
 
 import static android.system.Os.connect;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,19 +20,29 @@ import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
     String  str;
-
-
+    Button b1  ;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.login_activity);
+        setContentView(R.layout.welcome_activity);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
        connect();
+       b1 = findViewById(R.id.login_button);
+        b1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switchActivities();
+                    }
+                    }
+        );
+
     }
     protected void connect(){
         try {
@@ -41,5 +56,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    private void switchActivities() {
+        Intent switchActivityIntent = new Intent(this, login.class);
+        startActivity(switchActivityIntent);
+    }
 }
