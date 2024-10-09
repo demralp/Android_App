@@ -18,7 +18,8 @@ import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity {
-    DatabaseConnector connectionClass; Connection con; ResultSet rs; String name, str;
+    String  str;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+       connect();
+    }
+
+    protected void connect(){
         try {
             Connection con = DatabaseConnector.getConnection();
             str = "Database Connected";
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
         });
+
     }
 
 }
