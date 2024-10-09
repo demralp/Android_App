@@ -19,45 +19,43 @@ import java.sql.*;
 
 
 public class MainActivity extends AppCompatActivity {
-    String  str;
-    Button b1  ;
+
+    Button b1;
+    Button b2;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.welcome_activity);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        setContentView(R.layout.welcome_activity_1);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.welcome), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-       connect();
-       b1 = findViewById(R.id.login_button);
+
+        b1 = findViewById(R.id.login_button);
         b1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        switchActivities();
+                        Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(i);
                     }
+                }
+        );
+        b2 = findViewById(R.id.CreateButton);
+        b2.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(MainActivity.this,SignUpActivity.class);
+                        startActivity(i);
                     }
+                }
         );
 
-    }
-    protected void connect(){
-        try {
-            Connection con = DatabaseConnector.getConnection();
-            str = "Database Connected";
-        } catch (SQLException e) {
-            str = "Database Connection Failed";
-        }
-        runOnUiThread(() -> {
-            Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
-        });
 
     }
-    private void switchActivities() {
-        Intent switchActivityIntent = new Intent(this, login.class);
-        startActivity(switchActivityIntent);
-    }
+
 }
