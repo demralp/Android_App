@@ -1,5 +1,6 @@
 package com.example.prototype;
 
+import static android.system.Os.connect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,11 +18,7 @@ import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    DatabaseConnector connectionClass;
-    Connection con;
-    ResultSet rs;
-    String name, str;
+    DatabaseConnector connectionClass; Connection con; ResultSet rs; String name, str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,43 +30,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        connectionClass = new DatabaseConnector();
-        connect();
+        try {
+            Connection con = DatabaseConnector.getConnection();
+            str = "Database Connected";
+
+
+        } catch (SQLException e) {
+            str = "Database Connection Failed";
+        }
+        runOnUiThread(() -> {
+            Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
+        });
     }
 
-    public void click(View view) {
-    }
-    public void connect() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-      //  executorService.execute(() -> {
-            try {
-
-                try {
-                    con = connectionClass.CONN();
-                } catch (Exception e) {
-                    Log.e("Connection Error", "Error occurred while calling CONN()", e);
-                }
-
-                if (con == null) {
-                    str = "Error connecting to database";
-                } else {
-                    str = "Connected to database";
-                }
-            } catch (Exception e) {
-                Log.e("Connection Error", "Error occurred while connecting to database", e);
-                str = "Connection failed";
-            }
-
-            runOnUiThread(() -> {
-                Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
-            });
-       // });
-
-
-
-
-
-
-
-    }
 }

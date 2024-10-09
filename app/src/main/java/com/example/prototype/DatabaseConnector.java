@@ -1,36 +1,26 @@
 package com.example.prototype;
 
-import android.util.Log;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-    //protected static String database = "yarkindb";
-   // protected static String ip = "172.26.114.217";
-    //protected static String user = "yarkin";
-   // protected static String pass ="1234";
-   // protected static String port = "3306";
+    private static Connection con = null;
 
-    protected static String database = "yarkindb";
-    protected static String ip = "172.26.114.217";
-    protected static String user = "yarkin";
-    protected static String pass ="1234";
-    protected static String port = "3306";
-
-    public Connection CONN() {
-        Connection conn = null;
-        try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-            String connectionstring = "jdbc:mysql://" + ip + ":" + port + "/" + database;
-            conn = DriverManager.getConnection(connectionstring, user, pass);
-        } catch (ClassNotFoundException e) {
-            Log.e("Driver Error", "ClassNotFoundException: " + e.getMessage());
-        } catch (SQLException e) {
-            Log.e("SQL Error", "SQLException: " + e.getMessage());
+    public static Connection getConnection() throws SQLException {
+        if (con == null || con.isClosed()) {
+            con = CreateNewConnection();
         }
-        return conn;
+        return con;
+    }
+
+    private static Connection CreateNewConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://172.26.114.217:3306/yarkindb", "yarkin", "1234");
+        } catch (Exception e) {
+            System.out.println("Database connection failed: " + e);
+        }
+        return con;
     }
 }
