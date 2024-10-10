@@ -49,11 +49,15 @@ public class SignUpActivity extends AppCompatActivity {
                 user = UserInput.getText().toString();
                 pass = PassInput.getText().toString();
                 pass2 = Pass2Input.getText().toString();
-
-
-                executor.execute(() -> {
-                    DatabaseSend(user, pass); // Run database code on background thread
-                });
+                if(pass.equals(pass2)){
+                    executor.execute(() -> {
+                        DatabaseSend(user, pass); // Run database code on background thread
+                    });
+                }
+                else{
+                    Toast.makeText(SignUpActivity.this,
+                            "Passwords do not match", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -66,8 +70,14 @@ public class SignUpActivity extends AppCompatActivity {
             userStatement.setString(1, user);
             userStatement.setString(2, pass);
             userStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            // Duplicate entry
+            Toast.makeText(SignUpActivity.this,
+                "Username is already taken", Toast.LENGTH_LONG).show();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Toast.makeText(SignUpActivity.this,
+                    "Unable to connect to database", Toast.LENGTH_LONG).show();
+            // Other SQL Exception
         }
     }
 }
