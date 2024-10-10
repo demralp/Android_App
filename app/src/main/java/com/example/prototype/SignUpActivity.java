@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    String user, pass, pass2, str;
+    String user, pass, pass2;
     EditText UserInput, PassInput, Pass2Input;
 
     @Override
@@ -52,6 +52,9 @@ public class SignUpActivity extends AppCompatActivity {
                 if(pass.equals(pass2)){
                     executor.execute(() -> {
                         DatabaseSend(user, pass); // Run database code on background thread
+
+                        Intent i = new Intent(SignUpActivity.this,DataGatherActivity.class);
+                        startActivity(i);
                     });
                 }
                 else{
